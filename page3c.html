@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memories</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background: #f3e8ff;
+    font-family: 'Poppins', sans-serif;
+    padding: 40px 20px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+.title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.6rem;
+    color: #6b21a8;
+}
+.subtitle {
+    font-size: 0.95rem;
+    color: #7c3aed;
+    opacity: 0.7;
+}
+
+/* GRID */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    justify-items: center;
+}
+
+@media (max-width: 900px) {
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* CARD */
+.card {
+    position: relative;
+    width: 260px;
+}
+
+/* Hanging string */
+.card::before {
+    content: "";
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    width: 2px;
+    height: 30px;
+    background: #999;
+    transform: translateX(-50%);
+}
+
+/* Pin */
+.card::after {
+    content: "";
+    position: absolute;
+    top: -36px;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: #a855f7;
+    border-radius: 50%;
+    transform: translateX(-50%);
+}
+
+/* Photo box */
+.photo-box {
+    background: white;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    transform: rotate(var(--rotate));
+    transition: 0.3s;
+}
+
+.photo-box:hover {
+    transform: rotate(0deg) scale(1.05);
+}
+
+/* IMAGE (RECTANGLE) */
+.photo-box img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* NOTE */
+.note {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #555;
+    text-align: center;
+    min-height: 40px;
+    border-top: 1px dashed #ddd;
+    padding-top: 6px;
+}
+
+/* POPUP */
+.popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 0, 40, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.popup.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.popup img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* CLOSE BUTTON */
+.close-btn {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+}
+
+.popup img {
+    transform: scale(0.9);
+    transition: 0.3s;
+}
+
+.popup.active img {
+    transform: scale(1);
+}
+</style>
+</head>
+
+<body>
+<div class="popup" id="popup">
+    <span class="close-btn" onclick="closePopup()">✕</span>
+    <img id="popupImg">
+</div>
+
+<div class="header">
+    <div class="title">Little Moments</div>
+    <div class="subtitle">things I didn't say, but remembered</div>
+</div>
+
+<div class="gallery">
+
+    <div class="card" style="--rotate: -3deg;">
+        <div class="photo-box">
+            <img src="photo1.jpg" onclick="openPopup(this.src)">
+            <div class="note">this day felt unreal</div>
+        </div>
+    </div>
+
+    <div class="card" style="--rotate: 2deg;">
+        <div class="photo-box">
+            <img src="photo2.jpg" onclick="openPopup(this.src)">
+            <div class="note">you laughed too much here</div>
+        </div>
+    </div>
+
+    <div class="card" style="--rotate: -4deg;">
+        <div class="photo-box">
+            <img src="photo3.jpg" onclick="openPopup(this.src)">
+            <div class="note">i didn't want this to end</div>
+        </div>
+    </div>
+
+    <div class="card" style="--rotate: 3deg;">
+        <div class="photo-box">
+            <img src="photo4.jpg" onclick="openPopup(this.src)">
+            <div class="note">this one stays forever</div>
+        </div>
+    </div>
+
+    <div class="card" style="--rotate: -2deg;">
+        <div class="photo-box">
+            <img src="photo5.jpg" onclick="openPopup(this.src)">
+            <div class="note">you looked at me here</div>
+        </div>
+    </div>
+
+    <div class="card" style="--rotate: 4deg;">
+        <div class="photo-box">
+            <img src="photo6.jpg" onclick="openPopup(this.src)">
+            <div class="note">i wish i paused time</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script>
+    function openPopup(src) {
+    const popup = document.getElementById("popup");
+    const img = document.getElementById("popupImg");
+
+    img.src = src;
+    popup.classList.add("active");
+}
+
+function closePopup() {
+    document.getElementById("popup").classList.remove("active");
+}
+
+document.getElementById("popup").addEventListener("click", function(e) {
+    if (e.target.id === "popup") {
+        closePopup();
+    }
+});
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+        closePopup();
+    }
+});
+
+
+</script>
+</html>

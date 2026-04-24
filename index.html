@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #f8f5ff, #f3e8ff);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: background 1s;
+}
+
+/* STREAMERS */
+.streamer {
+    position: absolute;
+    width: 4px;
+    height: 120px;
+    background: linear-gradient(to bottom, gold, violet);
+    top: -20px;
+    border-radius: 2px;
+    opacity: 0.6;
+    animation: sway 4s infinite ease-in-out alternate;
+}
+
+@keyframes sway {
+    from { transform: rotate(-10deg); }
+    to { transform: rotate(10deg); }
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 30px 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 350px;
+    border: 1px solid #eee;
+}
+
+/* MESSAGE */
+.message {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.8rem;
+    color: #6a0dad;
+    line-height: 1.6;
+    transition: opacity 1s;
+}
+
+/* CAKE */
+.cake {
+    margin: 20px auto;
+    width: 140px;
+    display: block;
+}
+
+/* BUTTON */
+.btn {
+    display: block;
+    margin: 15px auto 0;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(45deg, gold, #d4af37);
+    color: #4b0082;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* CONFETTI */
+.confetti {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    opacity: 0.7;
+    top: -10px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}
+
+/* FADE OVERLAY */
+#fade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s;
+}
+</style>
+</head>
+
+<body>
+
+<div id="fade"></div>
+
+<!-- STREAMERS -->
+<div class="streamer" style="left: 10%;"></div>
+<div class="streamer" style="left: 30%; height: 150px;"></div>
+<div class="streamer" style="left: 70%; height: 130px;"></div>
+<div class="streamer" style="left: 90%;"></div>
+
+<div class="card">
+
+    <div class="message" id="message">
+        Happy birthday, my favorite human.<br>
+        Another year older… somehow still tolerable.<br>
+        I love you.
+    </div>
+
+    <img src="https://pngimg.com/d/cake_PNG96907.png" class="cake">
+
+    <button class="btn" id="btn">Blow the candles</button>
+
+</div>
+
+<script>
+const btn = document.getElementById("btn");
+const message = document.getElementById("message");
+const fade = document.getElementById("fade");
+
+btn.onclick = () => {
+
+    // Step 1: change message
+    message.innerHTML = "Make a wish.....";
+
+    // Step 2: remove button
+    btn.style.display = "none";
+
+    // Step 3: confetti
+    for (let i = 0; i < 120; i++) {
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.background = (i % 2 === 0) ? "gold" : "violet";
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + "s";
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 4000);
+    }
+
+    // Step 4: wait 5 sec
+    setTimeout(() => {
+
+        // fade to black
+        fade.style.opacity = 1;
+
+        setTimeout(() => {
+
+            // change background to darker violet
+            document.body.style.background = "linear-gradient(135deg, #2a003f, #140021)";
+
+            // change message
+            message.style.opacity = 0;
+
+            setTimeout(() => {
+                message.innerHTML = "I already made mine.";
+                message.style.opacity = 1;
+            }, 500);
+
+            // add new button
+            let newBtn = document.createElement("button");
+            newBtn.innerText = "Delve deeper";
+            newBtn.className = "btn";
+
+newBtn.onclick = () => {
+    document.body.style.opacity = 0;
+    setTimeout(() => {
+        window.location.href = "page2.html";
+    }, 500);
+};
+
+            document.querySelector(".card").appendChild(newBtn);
+
+            // fade back in
+            fade.style.opacity = 0;
+
+        }, 1000);
+
+    }, 5000);
+};
+</script>
+
+</body>
+</html>

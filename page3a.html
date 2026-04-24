@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Songs</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #140021, #2a003f);
+    font-family: 'Poppins', sans-serif;
+    padding: 30px 20px;
+    color: white;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.main-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.2rem;
+    color: #e9d5ff;
+}
+.sub-title {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* GRID */
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* SONG */
+.song {
+    background: #1c012e;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+.song:hover {
+    background: #25003d;
+}
+
+@media (max-width: 600px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.song-header {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    gap: 12px;
+}
+
+.cover {
+    width: 55px;
+    height: 55px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.info { flex: 1; }
+.title { font-size: 0.95rem; }
+.artist { font-size: 0.8rem; opacity: 0.6; }
+
+.play-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: #a855f7;
+    color: white;
+    cursor: pointer;
+}
+
+/* LYRICS */
+.lyrics {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+.song.active .lyrics {
+    overflow-y: auto;
+    max-height: 200px;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+}
+
+.col { flex: 1; font-size: 0.85rem; }
+.line { opacity: 0.4; }
+.line.active { opacity: 1; color: #c084fc; }
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 40px;
+}
+.back-btn {
+    padding: 10px 18px;
+    border-radius: 20px;
+    border: none;
+    background: #a855f7;
+    color: white;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="main-title">For all the time I think about you</div>
+    <div class="sub-title">songs that remind me of..well...you, duh</div>
+</div>
+
+<div class="container" id="container"></div>
+
+<div class="footer">
+    <button class="back-btn" onclick="goBack()">← return</button>
+</div>
+
+<script>
+const songData = [
+    { title: "Polaroid Love", artist: "ENHYPEN" },
+    { title: "Dekh Lena", artist: "Arijit Singh" },
+    { title: "Until I Found You", artist: "Stephen Sanchez" },
+    { title: "Night Changes", artist: "One Direction" },
+    { title: "I Wanna Be Yours", artist: "Arctic Monkeys" },
+    { title: "Humdard", artist: "Arijit Singh" },
+    { title: "Maana Ke Hum Yaar Nahin", artist: "Sonu Nigam, Parineeti Chopra" },
+    { title: "Aoge Jab Tum", artist: "Rashid Khan" },
+    { title: "Channa Mereya", artist: "Arijit Singh" },
+    { title: "Die With a Smile", artist: "Lady Gaga, Bruno Mars" }
+];
+
+const lyricsData = [
+    // 1
+    [
+        { time: 0, text: "Every moment feels like a polaroid", trans: "" },
+        { time: 4, text: "Captured with you in my mind", trans: "" },
+        { time: 8, text: "Even silence feels warm", trans: "" },
+        { time: 12, text: "When it's you I'm thinking of", trans: "" }
+    ],
+
+    // 2
+    [
+        { time: 0, text: "Kehta hai sun yeh dhoop kinara", trans: "Listen, this sunlit shore is saying that." },
+        { time: 7.5, text: "Tera hua main saara ka saara", trans: "I'm completely yours," },
+        { time: 13, text: "Dekh lena tere honthon pe hamesha", trans: "You shall see that always on your lips" },
+        { time: 19, text: "Main hasta hi rahoonga dekh lena", trans: "You'll find me like a smile" },
+        { time: 25, text: "Dekh lena bheegi joh teri aankhen", trans: "You shall see that if your eyes get wet" },
+        { time: 31, text: "Aankhon se main bahoonga dekh lena", trans: "Then I'll flow from them." }
+    ],
+
+    // 3
+    [
+        { time: 0, text: "I would never fall in love again until I found her,", trans: "" },
+        { time: 7, text: "I said, I would never fall unless it's you I fall into", trans: "" },
+        { time: 14, text: "I was lost within the darkness but then I found her,", trans: "" },
+        { time: 21, text: "I found you.", trans: "" }
+    ],
+
+    // 4
+    [
+        { time: 0, text: "We're only getting older baby", trans: "" },
+        { time: 5, text: "And I have been thinking about it lately,", trans: "" },
+        { time: 9, text: "Does it ever drive you crazy", trans: "" },
+        { time: 12.5, text: "Just how fast the night changes,", trans: "" },
+        { time: 17, text: "Everything you ever dreamed of,", trans: "" },
+        { time: 21, text: "Dissapearing when you wake up,", trans: "" },
+        { time: 25, text: "But, there is nothing to be afraid of,", trans: "" },
+        { time: 28, text: "Even when the night changes,", trans: "" },
+        { time: 33, text: "It will never change me and you.", trans: "" }
+    ],
+
+    // 5
+    [
+        { time: 0, text: "I wanna be your setting lotion", trans: "" },
+        { time: 5, text: "Holding you hair in deep devotion", trans: "" },
+        { time: 8.5, text: "Atleast as deep as the Pacific Ocean", trans: "" },
+        { time: 11.5, text: "I wanna be yours", trans: "" },
+        { time: 16, text: "Secrets I have held in my heart,", trans: "" },
+        { time: 19, text: "Are harder to hide than I thought", trans: "" },
+        { time: 23, text: "Maybe I just wanna be yours", trans: "" },
+        { time: 26, text: "I Wanna be yours", trans: "" },
+        { time: 28.5, text: "I Wanna be yours", trans: "" },
+        { time: 31, text: "Wanna be yours", trans: "" },
+        { time: 35, text: "Wanna be yours", trans: "" },
+        { time: 38.5, text: "Wanna be yours", trans: "" },
+    ],
+
+    // 6
+    [
+        { time: 0, text: "Teri dhadkano se hai zindagi meri", trans: "Your heartbeat is my life" },
+        { time: 6.5, text: "Khwaishein teri ab duayein meri", trans: "Your wishes are now my prayers" },
+        { time: 12, text: "Kitna anokha bandhan hai yeh", trans: "What a beautiful bond this is" },
+        { time: 17, text: "Teri meri jaan jo ek hui", trans: "As our souls unite to be one" },
+        { time: 21.5, text: "Lautunga yahan tere paas mein haan", trans: "Yes I'll come back here to you" },
+        { time: 26, text: "Vada hai mera, maar bhi jaun kahi.", trans: "This is my promise even if I die" },
+        { time: 33, text: "Jo tu mera humdard hai", trans: "If you're there to share my pain" },
+        { time: 38, text: "Jo tu mera humdard hai", trans: "If you're there to share my pain" },
+        { time: 44, text: "Suhana bedard hai", trans: "Pian is toleratable" },
+        { time: 50.5, text: "Jo tu mera humdard hai", trans: "If you're there to share my pain" },
+    ],
+
+    // 7
+    [
+        { time: 0, text: "Raaste mein jo milo toh", trans: "If you come across me in the streets" },
+        { time: 6, text: "Haath milane ruk jaana", trans: "Then stop to shake hands with me" },
+        { time: 21, text: "Saath mein koi ho tumhare", trans: "If someone else is there with you" },
+        { time: 27, text: "Door se hi tum muskana", trans: "Then just smile from a distance" },
+        { time: 33, text: "Lekin muskaan ho aisi", trans: "But your smile should be the one" },
+        { time: 38, text: "Ke jis mein iqraar nahi", trans: "In which there's no declaration" },
+        { time: 43, text: "Lekin muskaan ho aisi", trans: "But your smile should be the one" },
+        { time: 48, text: "Ke jis mein iqraar nahi", trans: "In which there's no declaration" },
+        { time: 54, text: "Nazron se na karna tum bayaan", trans: "Don't express it from your eyes" },
+        { time: 59, text: "Woh jisse inkaar nahin", trans: "The fact that you can't deny" },
+        { time: 65, text: "Maana ke hum yaar nahin.", trans: "We are closer than known" }
+    ],
+
+    // 8
+    [
+        { time: 0, text: "Naina tere kajrare hai", trans: "Your eyes are lined with kohl" },
+        { time: 6.5, text: "Naino pe hum dil haare hai", trans: "I’ve lost my heart to them" },
+        { time: 10.5, text: "Anjaane hi tere naino ne,", trans: "Your eyes unknowingly" },
+        { time: 14.5, text: "Vaade kiye kahi saare hai", trans: "Has made many promises" },
+        { time: 19.5, text: "Saanson ki lay madham chale", trans: "The pace of breath is moving slowly" },
+        { time: 24, text: "Toh se kahe", trans: "And it's telling you that" },
+        { time: 25.5, text: "Barsega saawan", trans: "The rain will pour down" },
+        { time: 29, text: "Barsega saawan jhoom jhoom ke", trans: "The rain will pour down dancing in joy" },
+        { time: 35.5, text: "Do dil aaise milenge", trans: "Two hearts will meet in such a way" },
+        { time: 41, text: "Aaoge jab tum o saajana", trans: "Whenever you'll come my beloved" },
+        { time: 47.5, text: "Angana phool khilenge", trans: "Flowers will bloom in my courtyard" }
+    ],
+
+    // 9
+    [
+        { time: 0, text: "Mehfil mein teri hum na rahe jo", trans: "If I'm not there in your gathering" },
+        { time: 6.5, text: "Gham toh nahi hai", trans: "It’s not sadness" },
+        { time: 9, text: "Gham toh nahi hai", trans: "It’s not sadness" },
+        { time: 12, text: "Kisse humari nazdikiyon ki", trans: "Our closeness still exists" },
+        { time: 17, text: "Kam toh nahi hai", trans: "Are never too less," },
+        { time: 19, text: "Kam toh nahi hai", trans: "Are never too less," },
+        { time: 22, text: "Kitni dafa subha ko meri", trans: "So many times, starting from the morning" },
+        { time: 27, text: "Tere aagan mein baithe maine sham kiya,", trans: "I sat in your courtyard till evening" },
+        { time: 32, text: "Channa Mereya mereya, Channa mereya mereya", trans: "O my moon, O my moon" },
+        { time: 38, text: "Channa mereya mereya beliya, o piya", trans: "My moon, my beloved" },
+        { time: 42, text: "Channa Mereya mereya, Channa mereya mereya", trans: "O my moon, O my moon" },
+        { time: 48, text: "Channa mereya mereya beliya, o piya", trans: "My moon, my beloved" }
+    ],
+
+    // 10
+    [
+        { time: 0, text: "Wherever you go that's where I'll follow", trans: "" },
+        { time: 0, text: "Nobody's promised tomorrow", trans: "" },
+        { time: 0, text: "So I'ma love you every night like it's the last night", trans: "" },
+        { time: 0, text: "Like it's the last night", trans: "" },
+        { time: 0, text: "If the world was ending, I'd wanna be next to you", trans: "" },
+        { time: 4, text: "If the party was over and our time on Earth was through", trans: "" },
+        { time: 8, text: "I'd wanna hold you just for a while and die with a smile", trans: "" },
+        { time: 12, text: "If the world was ending, I'd wanna be next to you", trans: "" }
+    ]
+];
+
+const container = document.getElementById("container");
+const songs = [];
+
+songData.forEach((data, i) => {
+    const songDiv = document.createElement("div");
+    songDiv.className = "song";
+
+    songDiv.innerHTML = `
+        <div class="song-header">
+            <img src="cover${i+1}.jpg" class="cover">
+            <div class="info">
+                <div class="title">${data.title}</div>
+                <div class="artist">${data.artist}</div>
+            </div>
+            <button class="play-btn" onclick="playSong(${i})">▶</button>
+        </div>
+        <div class="lyrics">
+            <div class="col" id="left${i}"></div>
+            <div class="col" id="right${i}"></div>
+        </div>
+    `;
+
+    container.appendChild(songDiv);
+
+    songs.push({
+        audio: new Audio(`song${i+1}.mp3`),
+        lyrics: lyricsData[i]
+    });
+});
+
+let current = null;
+
+function playSong(index) {
+    const song = songs[index];
+
+    // toggle pause
+    if (current === song && !song.audio.paused) {
+        song.audio.pause();
+        return;
+    }
+
+    // stop previous
+    if (current) {
+        current.audio.pause();
+        current.audio.currentTime = 0;
+    }
+
+    current = song;
+
+    // activate UI
+    document.querySelectorAll(".song").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".song")[index].classList.add("active");
+
+    renderLyrics(index);
+    song.audio.play();
+    syncLyrics(song, index);
+
+    document.querySelectorAll(".play-btn").forEach(btn => btn.innerText = "▶");
+    document.querySelectorAll(".play-btn")[index].innerText = "⏸";
+}
+
+function renderLyrics(index) {
+    const left = document.getElementById("left" + index);
+    const right = document.getElementById("right" + index);
+
+    left.innerHTML = "";
+    right.innerHTML = "";
+
+    songs[index].lyrics.forEach(l => {
+        left.innerHTML += `<div class="line">${l.text}</div>`;
+        right.innerHTML += `<div class="line">${l.trans}</div>`;
+    });
+}
+
+function syncLyrics(song, index) {
+    const linesLeft = document.querySelectorAll(`#left${index} .line`);
+    const linesRight = document.querySelectorAll(`#right${index} .line`);
+
+    song.audio.ontimeupdate = () => {
+        let time = song.audio.currentTime;
+
+        for (let i = 0; i < song.lyrics.length; i++) {
+    if (
+        time >= song.lyrics[i].time &&
+        (i === song.lyrics.length - 1 || time < song.lyrics[i + 1].time)
+    ) {
+        linesLeft.forEach(line => line.classList.remove("active"));
+        linesRight.forEach(line => line.classList.remove("active"));
+
+        if (linesLeft[i]) linesLeft[i].classList.add("active");
+        if (linesRight[i]) linesRight[i].classList.add("active");
+
+        break;
+        }
+        };
+    };
+}
+
+function goBack() {
+    document.body.style.opacity = 0;
+    setTimeout(() => {
+        window.location.href = "page2.html";
+    }, 400);
+}
+</script>
+
+</body>
+</html>
