@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Words</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background: #f3e8ff;
+    font-family: 'Poppins', sans-serif;
+    padding: 40px 20px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.8rem;
+    color: #6b21a8;
+}
+.subtitle {
+    font-size: 0.95rem;
+    color: #7c3aed;
+    opacity: 0.7;
+}
+
+/* LETTER CARD */
+.letter-container {
+    display: flex;
+    justify-content: center;
+}
+
+.letter {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    position: relative;
+}
+
+/* subtle paper effect */
+.letter::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 28px,
+        rgba(0,0,0,0.04) 29px
+    );
+    pointer-events: none;
+    border-radius: 16px;
+}
+
+/* TEXT */
+.text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+    color: #4c1d95;
+    position: relative;
+    z-index: 1;
+}
+
+/* SIGNATURE */
+.signature {
+    margin-top: 30px;
+    text-align: right;
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.6rem;
+    color: #6b21a8;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.back-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    background: #a855f7;
+    color: white;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="title">What I Couldn't Say</div>
+    <div class="subtitle">so I wrote it instead</div>
+</div>
+
+<div class="letter-container">
+    <div class="letter">
+        <div class="text">
+           My dear Aara,
+
+           <br><br>
+
+           After all that we faced, and all we have gone through, I have to admit that you're the only person in my whole life who chose me over everything else.
+           I remember when we first met, class 6, you, rituja and asmi sitting behind me. From that day, from my 'bombed chinese hospital' mania to your Hunter x Hunter obsession you are the only thing that remained constant in my damn life.
+           Not to mention, through the phase I was at its worst, when i did things I hate myself for doing, you believed in me, it was you who held my hand and said, I am with you. Thank you Aaratrika for being, for staying and for believing.
+
+            <br><br>
+
+            I wanna pay gratitude to whatever you have done for me, and to be very honest, these attempts are nothing compared to your sacrifices and your actions. And, thus, you have grown to be the only thing in the whole universe I care about, I am scared to lose, and thus my only attachment in this world. 
+
+            <br><br>
+
+            Now for the cheesy, overdramatic, and well kinda-romantic part. Do you know that my heart beat just slows down seeing you. Just a little bit. Not because you have a perfect body or super stylish. But because the way you hold yourself. The way you talk, the way you present yourself...your mistakes, your happiness, your obsession...everything. Everything about you makes me fall in love again and again. Forget about when you actually dress up in a kurti with your hair open...ahhh. And I really wanna mention something, your eyes. They hold emotions, they reflect you my dear, and they show what you are, and they make my heart stop for all the time I look at them. You are too beautiful to stop looking at. And I wanna spend those little unjudged, unbridled moments with you, like sprinting in the rain, or when you look at me a bit too long and smile.
+            <br><br>
+
+            Now, i wanna admit something. I hate it when you are sad, I hate it when you don't wanna tell me something. You can call me possessive, but I wanna help you out. I know I mess up quite often, and you don't like things to be messed up (obviously) and still you tell me stuff...but I want you to comfortable with me emotionally, cause I promise, I won't judge you. I won't judge you, I won't reveal you secrets and i would definitely not make life difficult for you. Cause, my dear, when you are sad, My heart becomes heavy, and when you cry, my heart shatters.
+
+            <br><br>
+
+            And I wanna spend those little unjudged, unbridled moments with you, like sprinting in the rain, or when you look at me a bit too longand smile.
+
+            <br><br>
+
+            And I guess this is me admitting that,
+            even if I never said it out loud.
+        </div>
+
+        <div class="signature">
+            — yours, in devotion
+            <br><br>
+            Shourjadeep
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <button class="back-btn" onclick="goBack()">← return</button>
+</div>
+
+<script>
+function goBack() {
+    document.body.style.opacity = 0;
+    setTimeout(() => {
+        window.location.href = "page3a.html";
+    }, 400);
+}
+</script>
+
+</body>
+</html>
