@@ -87,6 +87,9 @@ body {
     background: white;
     padding: 12px;
     border-radius: 12px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
     box-shadow: 0 10px 25px rgba(0,0,0,0.12);
     transform: rotate(var(--rotate));
     transition: 0.3s;
@@ -99,8 +102,7 @@ body {
 /* IMAGE (RECTANGLE) */
 .photo-box img {
     width: 100%;
-    height: 160px;
-    object-fit: cover;
+    height: auto;
     border-radius: 8px;
 }
 
@@ -159,10 +161,24 @@ body {
 .popup.active img {
     transform: scale(1);
 }
+
+.back-btn {
+    padding: 10px 18px;
+    border-radius: 20px;
+    border: none;
+    background: #a855f7;
+    color: white;
+    cursor: pointer;
+}
 </style>
 </head>
 
 <body>
+
+<div class="footer">
+    <button class="back-btn" onclick="goBack()">← return</button>
+</div>
+
 <div class="popup" id="popup">
     <span class="close-btn" onclick="closePopup()">✕</span>
     <img id="popupImg">
@@ -170,7 +186,8 @@ body {
 
 <div class="header">
     <div class="title">Little Moments</div>
-    <div class="subtitle">things I didn't say, but remembered</div>
+    <div class="subtitle">I got these saved in my drive, for when i miss you, ma'am</div>
+    <div class="subtitle">Click the pic for better view</div>
 </div>
 
 <div class="gallery">
@@ -178,42 +195,42 @@ body {
     <div class="card" style="--rotate: -3deg;">
         <div class="photo-box">
             <img src="photo1.png" onclick="openPopup(this.src)">
-            <div class="note">this day felt unreal</div>
+            <div class="note">Earth Day, you looked better than half of the world</div>
         </div>
     </div>
 
     <div class="card" style="--rotate: 2deg;">
         <div class="photo-box">
             <img src="photo2.png" onclick="openPopup(this.src)">
-            <div class="note">you laughed too much here</div>
+            <div class="note">Once I saw you, can't take my eyes off</div>
         </div>
     </div>
 
     <div class="card" style="--rotate: -4deg;">
         <div class="photo-box">
             <img src="photo3.png" onclick="openPopup(this.src)">
-            <div class="note">i didn't want this to end</div>
+            <div class="note">Cuteness kills</div>
         </div>
     </div>
 
     <div class="card" style="--rotate: 3deg;">
         <div class="photo-box">
             <img src="photo4.png" onclick="openPopup(this.src)">
-            <div class="note">this one stays forever</div>
+            <div class="note">Bro, you looks like a older lady..past you thrirties, and I love it</div>
         </div>
     </div>
 
     <div class="card" style="--rotate: -2deg;">
         <div class="photo-box">
             <img src="photo5.png" onclick="openPopup(this.src)">
-            <div class="note">you looked at me here</div>
+            <div class="note">Kept replyaing the moment</div>
         </div>
     </div>
 
     <div class="card" style="--rotate: 4deg;">
         <div class="photo-box">
             <img src="photo6.png" onclick="openPopup(this.src)">
-            <div class="note">i wish i paused time</div>
+            <div class="note">Back to being a kid</div>
         </div>
     </div>
 
@@ -244,6 +261,13 @@ document.addEventListener("keydown", function(e) {
         closePopup();
     }
 });
+
+function goBack() {
+    document.body.style.opacity = 0;
+    setTimeout(() => {
+        window.location.href = "page2.html";
+    }, 400);
+}
 
 
 </script>
