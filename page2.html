@@ -2,166 +2,221 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f8f5ff">
 <title>Choose</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-body {
+
+/* ── Reset ───────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+html, body {
     margin: 0;
-    height: 100vh;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    min-height: 100dvh;
     background: linear-gradient(135deg, #f8f5ff, #f3e8ff);
     font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    gap: 0;
 }
 
-/* TOP TEXT */
+/* ── TOP TEXT ────────────────────────────────────────── */
 .top-text {
     font-family: 'Great Vibes', cursive;
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
     color: #6a0dad;
-    margin-bottom: 40px;
+    margin-bottom: clamp(24px, 4vh, 48px);
+    text-align: center;
+    z-index: 2;
+    -webkit-text-size-adjust: none;
 }
 
-/* CHARACTER ROW */
+/* ── CHARACTER ROW ───────────────────────────────────── */
 .characters {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    gap: 60px;
+    /* Gap scales with screen width; Galaxy Tab is ~800–1850px wide */
+    gap: clamp(20px, 5vw, 80px);
     z-index: 2;
+    padding: 0 clamp(12px, 3vw, 40px);
 }
 
-/* CHARACTER CARD */
+/* ── CHARACTER CARD ──────────────────────────────────── */
 .character {
     text-align: center;
+    display: block;
+    text-decoration: none;
+    /* 48px minimum touch target padding trick */
+    padding: 8px;
+    border-radius: 16px;
     transition: transform 0.3s ease, filter 0.3s ease;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .character img {
-    width: 180px;
-    height: 260px;
+    /* Width scales: 120px on small → up to 220px on Tab S8 Ultra */
+    width: clamp(110px, 18vw, 220px);
+    height: auto;
+    aspect-ratio: 9 / 13;
     object-fit: contain;
-    transition: 0.3s;
+    display: block;
+    /* Crisp on Samsung AMOLED high-DPI */
+    image-rendering: -webkit-optimize-contrast;
+    draggable: false;
+    pointer-events: none; /* let the <a> handle all touch */
 }
 
-/* HOVER EFFECT */
+/* Hover (desktop/stylus) */
 .character:hover {
-    transform: translateY(-10px) scale(1.05);
-    filter: drop-shadow(0 10px 15px rgba(106,13,173,0.3));
+    transform: translateY(-12px) scale(1.06);
+    filter: drop-shadow(0 12px 18px rgba(106, 13, 173, 0.35));
 }
 
-/* BOTTOM TEXT */
+/* Active state — tactile on touch; :hover won't fire reliably on tablet */
+.character:active {
+    transform: translateY(-4px) scale(0.98);
+    filter: drop-shadow(0 4px 8px rgba(106, 13, 173, 0.25));
+    transition-duration: 0.1s;
+}
+
+/* ── BOTTOM TEXT ─────────────────────────────────────── */
 .bottom-text {
-    margin-top: 50px;
-    font-size: 0.95rem;
+    margin-top: clamp(24px, 4vh, 56px);
+    font-size: clamp(0.8rem, 1.8vw, 1rem);
     color: #6a0dad;
     opacity: 0.8;
     text-align: center;
-    max-width: 300px;
+    max-width: clamp(260px, 55vw, 480px);
     z-index: 2;
+    padding: 0 16px;
+    line-height: 1.5;
 }
 
-/* DECORATION IMAGES */
+/* ── DECO IMAGES ─────────────────────────────────────── */
 .deco {
-    position: absolute;
+    position: fixed;          /* fixed so they sit relative to viewport, not document */
     pointer-events: none;
     filter: blur(0.5px);
     z-index: 1;
     animation: float 5s ease-in-out infinite alternate;
+    will-change: transform;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Scale deco images proportionally on larger screens */
+    width: clamp(70px, 12vw, 150px);
 }
 
-/* Individual placements with rotation stored */
-.gon {
-    top: 5%;
-    left: 5%;
-    width: 120px;
-    --rot: -15deg;
-    opacity: 0.10;
-}
+/* Individual placements — use custom property for rotation */
+.gon      { top: 4%;   left: 3%;   --rot: -15deg; opacity: 0.10; animation-delay: 0s;    }
+.killua   { bottom: 4%; left: 8%;  --rot:  10deg; opacity: 0.13; animation-delay: 0.8s;  }
+.kurapika { top: 8%;   right: 3%;  --rot:  12deg; opacity: 0.11; animation-delay: 0.4s;  }
+.leorio   { bottom: 4%; right: 8%; --rot: -10deg; opacity: 0.12; animation-delay: 1.1s;  }
+.meruem   { top: 32%;  right: -10px; --rot: 0deg; opacity: 0.08; animation-delay: 0.6s;  }
 
-.killua {
-    bottom: 5%;
-    left: 10%;
-    width: 130px;
-    --rot: 10deg;
-    opacity: 0.13;
-}
-
-.kurapika {
-    top: 10%;
-    right: 5%;
-    width: 130px;
-    --rot: 12deg;
-    opacity: 0.11;
-}
-
-.leorio {
-    bottom: 5%;
-    right: 10%;
-    width: 120px;
-    --rot: -10deg;
-    opacity: 0.12;
-}
-
-.meruem {
-    top: 35%;
-    right: -20px;
-    width: 140px;
-    --rot: 0deg;
-    opacity: 0.08;
-}
-
-/* FLOAT ANIMATION (FIXED) */
 @keyframes float {
-    from {
-        transform: translateY(0) rotate(var(--rot));
-    }
-    to {
-        transform: translateY(10px) rotate(var(--rot));
-    }
+    from { transform: translateY(0px)  rotate(var(--rot)); }
+    to   { transform: translateY(12px) rotate(var(--rot)); }
 }
+
+/* ── FADE IN ON LOAD ─────────────────────────────────── */
+body {
+    opacity: 0;
+    animation: fadeIn 0.7s ease forwards;
+}
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
 </style>
 </head>
-
 <body>
 
 <!-- DECOR -->
-<img src="https://www.pngall.com/wp-content/uploads/14/Gon-PNG-Image.png" class="deco gon">
-<img src="https://www.pngmart.com/files/23/Killua-Download-PNG-Image.png" class="deco killua">
-<img src="https://static.wikia.nocookie.net/vsbattles/images/7/76/KurapikaKurta_v4_%28HxH%29.png/revision/latest/scale-to-width-down/480?cb=20220215131508" class="deco kurapika">
-<img src="https://static.wikia.nocookie.net/all-worlds-alliance/images/6/65/3007.png/revision/latest/scale-to-width-down/340?cb=20190428020820" class="deco leorio">
-<img src="https://hunterhunter-ni.bushiroad.com/wordpress/wp-content/themes/hunter-ni_v1/assets/images/common/character/img_meruem_tachie.png" class="deco meruem">
+<img src="https://www.pngall.com/wp-content/uploads/14/Gon-PNG-Image.png"
+     class="deco gon" alt="" draggable="false" loading="eager">
+<img src="https://www.pngmart.com/files/23/Killua-Download-PNG-Image.png"
+     class="deco killua" alt="" draggable="false" loading="eager">
+<img src="https://static.wikia.nocookie.net/vsbattles/images/7/76/KurapikaKurta_v4_%28HxH%29.png/revision/latest/scale-to-width-down/480?cb=20220215131508"
+     class="deco kurapika" alt="" draggable="false" loading="lazy">
+<img src="https://static.wikia.nocookie.net/all-worlds-alliance/images/6/65/3007.png/revision/latest/scale-to-width-down/340?cb=20190428020820"
+     class="deco leorio" alt="" draggable="false" loading="lazy">
+<img src="https://hunterhunter-ni.bushiroad.com/wordpress/wp-content/themes/hunter-ni_v1/assets/images/common/character/img_meruem_tachie.png"
+     class="deco meruem" alt="" draggable="false" loading="lazy">
 
 <div class="top-text">Choose one.</div>
 
 <div class="characters">
 
     <!-- Pakunoda -->
-    <a href="page3a.html" class="character">
-        <img src="https://static.wikia.nocookie.net/villains/images/d/dc/Paku_hxh.png/revision/latest?cb=20250514160653" alt="Pakunoda">
+    <a href="page3a.html" class="character" id="c1" aria-label="Choose Pakunoda">
+        <img src="https://static.wikia.nocookie.net/villains/images/d/dc/Paku_hxh.png/revision/latest?cb=20250514160653"
+             alt="Pakunoda" loading="eager">
     </a>
 
     <!-- Chrollo -->
-    <a href="page3b.html" class="character">
-        <img src="https://www.pngplay.com/wp-content/uploads/12/Chrollo-Lucilfer-Transparent-File.png" alt="Chrollo">
+    <a href="page3b.html" class="character" id="c2" aria-label="Choose Chrollo">
+        <img src="https://www.pngplay.com/wp-content/uploads/12/Chrollo-Lucilfer-Transparent-File.png"
+             alt="Chrollo" loading="eager">
     </a>
 
     <!-- Neferpitou -->
-    <a href="page3c.html" class="character">
-        <img src="https://static.wikia.nocookie.net/villains/images/e/ed/Pitou.png/revision/latest/thumbnail/width/360/height/360?cb=20210228183633" alt="Neferpitou">
+    <a href="page3c.html" class="character" id="c3" aria-label="Choose Neferpitou">
+        <img src="https://static.wikia.nocookie.net/villains/images/e/ed/Pitou.png/revision/latest/thumbnail/width/360/height/360?cb=20210228183633"
+             alt="Neferpitou" loading="eager">
     </a>
 
 </div>
 
 <div class="bottom-text">
-    I think I got your favorites right. If not… I’ll accept my fate.
+    I think I got your favorites right. If not… I'll accept my fate.
 </div>
 
+<script>
+(function () {
+    // Fade to black before navigating — matches page1 exit transition
+    var cards = document.querySelectorAll(".character");
+
+    cards.forEach(function (card) {
+        function navigate(e) {
+            e.preventDefault();
+            var href = card.getAttribute("href");
+            // Fade out body, then go
+            document.body.style.transition = "opacity 0.5s ease";
+            document.body.style.opacity    = "0";
+            setTimeout(function () {
+                window.location.href = href;
+            }, 500);
+        }
+
+        card.addEventListener("click", navigate);
+        card.addEventListener("touchend", function (e) {
+            e.preventDefault(); // suppress ghost click on Samsung Internet
+            navigate(e);
+        });
+    });
+})();
+</script>
 </body>
 </html>
